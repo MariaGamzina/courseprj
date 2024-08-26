@@ -2,6 +2,11 @@ package ru.netology.shop.test;
 
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
+import com.codeborne.selenide.logevents.SelenideLogger;
+import io.qameta.allure.selenide.AllureSelenide;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.netology.shop.data.DataHelper;
 import ru.netology.shop.page.PayPage;
@@ -13,9 +18,25 @@ import static com.codeborne.selenide.Selectors.withText;
 import static com.codeborne.selenide.Selenide.*;
 
 public class ShopTest {
+
+    @BeforeAll
+    static void setUpAll() {
+        SelenideLogger.addListener("allure", new AllureSelenide());
+    }
+
+    @AfterAll
+    static void tearDown() {
+        SelenideLogger.removeListener("allure");
+    }
+
+
+    @BeforeEach
+    void setup() {
+        open("http://localhost:8080");
+    }
+
     @Test
     void successPayFirstCard() {
-        open("http://localhost:8080");
 
         var payPage = new PayPage();
         var cardInfo = DataHelper.getFirstCardInfo();
@@ -29,7 +50,6 @@ public class ShopTest {
 
     @Test
     void successPaySecondCard() {
-        open("http://localhost:8080");
 
         var payPage = new PayPage();
         var cardInfo = DataHelper.getSecondCardInfo();
@@ -43,7 +63,6 @@ public class ShopTest {
 
     @Test
     void PayWrongCard() {
-        open("http://localhost:8080");
 
         var payPage = new PayPage();
         var cardInfo = DataHelper.getWrongCardInfo();
@@ -57,7 +76,6 @@ public class ShopTest {
 
     @Test
     void PayWrongFormatCard() {
-        open("http://localhost:8080");
 
         var payPage = new PayPage();
         var cardInfo = DataHelper.getWrongFormatCardInfo();
@@ -71,7 +89,6 @@ public class ShopTest {
 
     @Test
     void PayWrongFormatMonth() {
-        open("http://localhost:8080");
 
         var payPage = new PayPage();
         var cardInfo = DataHelper.getWrongFormatMonth();
@@ -85,7 +102,6 @@ public class ShopTest {
 
     @Test
     void PayMonthZero() {
-        open("http://localhost:8080");
 
         var payPage = new PayPage();
         var cardInfo = DataHelper.getMonthZero();
@@ -99,7 +115,6 @@ public class ShopTest {
 
     @Test
     void PayMonth12() {
-        open("http://localhost:8080");
 
         var payPage = new PayPage();
         var cardInfo = DataHelper.getMonth12();
@@ -113,7 +128,6 @@ public class ShopTest {
 
     @Test
     void PayMonth13() {
-        open("http://localhost:8080");
 
         var payPage = new PayPage();
         var cardInfo = DataHelper.getMonth13();
@@ -127,7 +141,6 @@ public class ShopTest {
 
     @Test
     void PayOldCard() {
-        open("http://localhost:8080");
 
         var payPage = new PayPage();
         var cardInfo = DataHelper.getOldCardInfo();
@@ -141,7 +154,6 @@ public class ShopTest {
 
     @Test
     void PayOldCardBackMonth() {
-        open("http://localhost:8080");
 
         var payPage = new PayPage();
         var cardInfo = DataHelper.getOldCardInfoBackMonth();
@@ -155,7 +167,6 @@ public class ShopTest {
 
     @Test
     void SetNameRu() {
-        open("http://localhost:8080");
 
         var payPage = new PayPage();
         var cardInfo = DataHelper.nameRus();
@@ -169,7 +180,6 @@ public class ShopTest {
 
     @Test
     void SetNameNumb() {
-        open("http://localhost:8080");
 
         var payPage = new PayPage();
         var cardInfo = DataHelper.nameNumb();
@@ -183,7 +193,6 @@ public class ShopTest {
 
     @Test
     void SetNameSymb() {
-        open("http://localhost:8080");
 
         var payPage = new PayPage();
         var cardInfo = DataHelper.nameSymb();
@@ -197,7 +206,6 @@ public class ShopTest {
 
     @Test
     void SetNameSpace() {
-        open("http://localhost:8080");
 
         var payPage = new PayPage();
         var cardInfo = DataHelper.nameSpace();
@@ -211,7 +219,6 @@ public class ShopTest {
 
     @Test
     void SetSpaceField() {
-        open("http://localhost:8080");
 
         var payPage = new PayPage();
         var cardInfo = DataHelper.spaceField();

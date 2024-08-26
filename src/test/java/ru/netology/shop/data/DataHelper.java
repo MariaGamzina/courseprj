@@ -31,13 +31,11 @@ public class DataHelper {
     }
 
     private static String generateRandomMonth() {
-       // return FAKER.month($min = 'now');
-       return "09";
+        return LocalDate.now().plusMonths(1).format(DateTimeFormatter.ofPattern("MM"));
     }
 
     private static String generateRandomYear() {
-      //  return FAKER.year($min = 'now');
-        return "24";
+        return LocalDate.now().plusYears(1).format(DateTimeFormatter.ofPattern("yy"));
     }
 
     private static String generateRandomCVC() {
