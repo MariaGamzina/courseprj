@@ -34,8 +34,16 @@ public class DataHelper {
         return LocalDate.now().plusMonths(1).format(DateTimeFormatter.ofPattern("MM"));
     }
 
+    private static String generateOneMonthBack() {
+        return LocalDate.now().plusMonths(-1).format(DateTimeFormatter.ofPattern("MM"));
+    }
+
     private static String generateRandomYear() {
         return LocalDate.now().plusYears(1).format(DateTimeFormatter.ofPattern("yy"));
+    }
+
+    private static String generateNowYear() {
+        return LocalDate.now().format(DateTimeFormatter.ofPattern("yy"));
     }
 
     private static String generateRandomCVC() {
@@ -71,12 +79,12 @@ public class DataHelper {
         return new CardInfo(FAKER.numerify("1111 2222 3333 4444"), "13", generateRandomYear(), generateRandomName(), generateRandomCVC());
     }
 
-    public static CardInfo getOldCardInfo() {
+    public static CardInfo getExpiredCardInfo() {
         return new CardInfo("1111 2222 3333 4444", "12", "23", generateRandomName(), generateRandomCVC());
     }
 
     public static CardInfo getOldCardInfoBackMonth() {
-        return new CardInfo("1111 2222 3333 4444", "07", "24", generateRandomName(), generateRandomCVC());
+        return new CardInfo("1111 2222 3333 4444", generateOneMonthBack(), generateNowYear(), generateRandomName(), generateRandomCVC());
     }
 
     public static CardInfo nameRus() {

@@ -4,11 +4,10 @@ import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.logevents.SelenideLogger;
 import io.qameta.allure.selenide.AllureSelenide;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import ru.netology.shop.data.DataHelper;
+import ru.netology.shop.data.SqlHelper;
+import ru.netology.shop.page.MainPage;
 import ru.netology.shop.page.PayPage;
 
 import java.time.Duration;
@@ -38,200 +37,168 @@ public class ShopTest {
     @Test
     void successPayFirstCard() {
 
-        var payPage = new PayPage();
+        var mainPage = new MainPage();
+        var payPage = mainPage.openPayPage();
         var cardInfo = DataHelper.getFirstCardInfo();
         payPage.makeValidCard(cardInfo);
+        payPage.successNotification();
+        Assertions.assertEquals("APPROVED", SqlHelper.getStatus());
 
-        $$(".button").last().click();
-
-        $(withText("Операция одобрена")).shouldBe(Condition.visible, Duration.ofSeconds(15));
 
     }
 
     @Test
     void successPaySecondCard() {
 
-        var payPage = new PayPage();
+        var mainPage = new MainPage();
+        var payPage = mainPage.openPayPage();
         var cardInfo = DataHelper.getSecondCardInfo();
         payPage.makeValidCard(cardInfo);
-
-        $$(".button").last().click();
-
-        $(withText("Операция одобрена")).shouldBe(Condition.visible, Duration.ofSeconds(15));
+        payPage.successNotification();
+        Assertions.assertEquals("APPROVED", SqlHelper.getStatus());
 
     }
 
     @Test
-    void PayWrongCard() {
+    void payWrongCard() {
 
-        var payPage = new PayPage();
+        var mainPage = new MainPage();
+        var payPage = mainPage.openPayPage();
         var cardInfo = DataHelper.getWrongCardInfo();
         payPage.makeValidCard(cardInfo);
-
-        $$(".button").last().click();
-
-        $(withText("Банк отказал")).shouldBe(Condition.visible, Duration.ofSeconds(15));
-
+        payPage.failNotification();
+        Assertions.assertEquals("DECLINED", SqlHelper.getStatus());
     }
 
     @Test
-    void PayWrongFormatCard() {
+    void payWrongFormatCard() {
 
-        var payPage = new PayPage();
+        var mainPage = new MainPage();
+        var payPage = mainPage.openPayPage();
         var cardInfo = DataHelper.getWrongFormatCardInfo();
         payPage.makeValidCard(cardInfo);
+        payPage.errorNotification("Неверный формат");
 
-        $$(".button").last().click();
-
-        $(".input__sub").shouldHave(Condition.text("Неверный формат"));
 
     }
 
     @Test
-    void PayWrongFormatMonth() {
+    void payWrongFormatMonth() {
 
-        var payPage = new PayPage();
+        var mainPage = new MainPage();
+        var payPage = mainPage.openPayPage();
         var cardInfo = DataHelper.getWrongFormatMonth();
         payPage.makeValidCard(cardInfo);
-
-        $$(".button").last().click();
-
-        $(".input__sub").shouldHave(Condition.text("Неверный формат"));
+        payPage.errorNotification("Неверный формат");
 
     }
 
     @Test
-    void PayMonthZero() {
+    void payMonthZero() {
 
-        var payPage = new PayPage();
+        var mainPage = new MainPage();
+        var payPage = mainPage.openPayPage();
         var cardInfo = DataHelper.getMonthZero();
         payPage.makeValidCard(cardInfo);
-
-        $$(".button").last().click();
-
-        $(".input__sub").shouldHave(Condition.text("Неверный формат"));
-
+        payPage.errorNotification("Неверный формат");
     }
 
     @Test
-    void PayMonth12() {
+    void payMonth12() {
 
-        var payPage = new PayPage();
+        var mainPage = new MainPage();
+        var payPage = mainPage.openPayPage();
         var cardInfo = DataHelper.getMonth12();
         payPage.makeValidCard(cardInfo);
-
-        $$(".button").last().click();
-
-        $(withText("Операция одобрена")).shouldBe(Condition.visible, Duration.ofSeconds(15));
-
+        payPage.successNotification();
+        Assertions.assertEquals("APPROVED", SqlHelper.getStatus());
     }
 
     @Test
-    void PayMonth13() {
+    void payMonth13() {
 
-        var payPage = new PayPage();
+        var mainPage = new MainPage();
+        var payPage = mainPage.openPayPage();
         var cardInfo = DataHelper.getMonth13();
         payPage.makeValidCard(cardInfo);
-
-        $$(".button").last().click();
-
-        $(".input__sub").shouldHave(Condition.text("Неверно указан срок действия карты"));
+        payPage.errorNotification("Неверно указан срок действия карты");
 
     }
 
     @Test
-    void PayOldCard() {
+    void payOldCard() {
 
-        var payPage = new PayPage();
-        var cardInfo = DataHelper.getOldCardInfo();
+        var mainPage = new MainPage();
+        var payPage = mainPage.openPayPage();
+        var cardInfo = DataHelper.getExpiredCardInfo();
         payPage.makeValidCard(cardInfo);
-
-        $$(".button").last().click();
-
-        $(".input__sub").shouldHave(Condition.text("Истёк срок действия карты"));
+        payPage.errorNotification("Истёк срок действия карты");
 
     }
 
     @Test
-    void PayOldCardBackMonth() {
+    void payOldCardBackMonth() {
 
-        var payPage = new PayPage();
+        var mainPage = new MainPage();
+        var payPage = mainPage.openPayPage();
         var cardInfo = DataHelper.getOldCardInfoBackMonth();
         payPage.makeValidCard(cardInfo);
-
-        $$(".button").last().click();
-
-        $(".input__sub").shouldHave(Condition.text("Неверно указан срок действия карты"));
+        payPage.errorNotification("Неверно указан срок действия карты");
 
     }
 
     @Test
-    void SetNameRu() {
+    void setNameRu() {
 
-        var payPage = new PayPage();
+        var mainPage = new MainPage();
+        var payPage = mainPage.openPayPage();
         var cardInfo = DataHelper.nameRus();
         payPage.makeValidCard(cardInfo);
-
-        $$(".button").last().click();
-
-        $(".input__sub").shouldHave(Condition.text("Неверный формат"));
+        payPage.errorNotification("Неверный формат");
 
     }
 
     @Test
-    void SetNameNumb() {
+    void setNameNumb() {
 
-        var payPage = new PayPage();
+        var mainPage = new MainPage();
+        var payPage = mainPage.openPayPage();
         var cardInfo = DataHelper.nameNumb();
         payPage.makeValidCard(cardInfo);
-
-        $$(".button").last().click();
-
-        $(".input__sub").shouldHave(Condition.text("Неверный формат"));
+        payPage.errorNotification("Неверный формат");
 
     }
 
     @Test
-    void SetNameSymb() {
+    void setNameSymb() {
 
-        var payPage = new PayPage();
+        var mainPage = new MainPage();
+        var payPage = mainPage.openPayPage();
         var cardInfo = DataHelper.nameSymb();
         payPage.makeValidCard(cardInfo);
-
-        $$(".button").last().click();
-
-        $(".input__sub").shouldHave(Condition.text("Неверный формат"));
+        payPage.errorNotification("Неверный формат");
 
     }
 
     @Test
-    void SetNameSpace() {
+    void setNameSpace() {
 
-        var payPage = new PayPage();
+        var mainPage = new MainPage();
+        var payPage = mainPage.openPayPage();
         var cardInfo = DataHelper.nameSpace();
         payPage.makeValidCard(cardInfo);
-
-        $$(".button").last().click();
-
-        $(".input__sub").shouldHave(Condition.text("Поле обязательно для заполнения"));
+        payPage.errorNotification("Поле обязательно для заполнения");
 
     }
 
     @Test
-    void SetSpaceField() {
+    void setSpaceField() {
 
-        var payPage = new PayPage();
+        var mainPage = new MainPage();
+        var payPage = mainPage.openPayPage();
         var cardInfo = DataHelper.spaceField();
         payPage.makeValidCard(cardInfo);
-
-        $$(".button").last().click();
-
-        $$(".input__sub").get(0).shouldHave(Condition.text("Неверный формат"));
-        $$(".input__sub").get(1).shouldHave(Condition.text("Неверный формат"));
-        $$(".input__sub").get(2).shouldHave(Condition.text("Неверный формат"));
-        $$(".input__sub").get(3).shouldHave(Condition.text("Поле обязательно для заполнения"));
-        $$(".input__sub").get(4).shouldHave(Condition.text("Неверный формат"));
-
+        payPage.errorAllNotification();
 
     }
 }
