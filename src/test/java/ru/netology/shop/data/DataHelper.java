@@ -15,27 +15,23 @@ public class DataHelper {
 
 
     public static CardInfo getFirstCardInfo() {
-        return new CardInfo("1111 2222 3333 4444", generateRandomMonth(), generateRandomYear(), generateRandomName(), generateRandomCVC());
+        return new CardInfo("1111 2222 3333 4444", generateMonth(1), generateRandomYear(), generateRandomName(), generateRandomCVC());
     }
 
     public static CardInfo getSecondCardInfo() {
-        return new CardInfo("5555 6666 7777 8888", generateRandomMonth(), generateRandomYear(), generateRandomName(), generateRandomCVC());
+        return new CardInfo("5555 6666 7777 8888", generateMonth(1), generateRandomYear(), generateRandomName(), generateRandomCVC());
     }
 
     public static CardInfo getWrongCardInfo() {
-        return new CardInfo(FAKER.numerify("#### #### #### ####"), generateRandomMonth(), generateRandomYear(), generateRandomName(), generateRandomCVC());
+        return new CardInfo(FAKER.numerify("#### #### #### ####"), generateMonth(1), generateRandomYear(), generateRandomName(), generateRandomCVC());
     }
 
     public static CardInfo getWrongFormatCardInfo() {
-        return new CardInfo(FAKER.numerify("#### #### ####"), generateRandomMonth(), generateRandomYear(), generateRandomName(), generateRandomCVC());
+        return new CardInfo(FAKER.numerify("#### #### ####"), generateMonth(1), generateRandomYear(), generateRandomName(), generateRandomCVC());
     }
 
-    private static String generateRandomMonth() {
-        return LocalDate.now().plusMonths(1).format(DateTimeFormatter.ofPattern("MM"));
-    }
-
-    private static String generateOneMonthBack() {
-        return LocalDate.now().plusMonths(-1).format(DateTimeFormatter.ofPattern("MM"));
+    private static String generateMonth(int month) {
+        return LocalDate.now().plusMonths(month).format(DateTimeFormatter.ofPattern("MM"));
     }
 
     private static String generateRandomYear() {
@@ -84,23 +80,23 @@ public class DataHelper {
     }
 
     public static CardInfo getOldCardInfoBackMonth() {
-        return new CardInfo("1111 2222 3333 4444", generateOneMonthBack(), generateNowYear(), generateRandomName(), generateRandomCVC());
+        return new CardInfo("1111 2222 3333 4444", generateMonth(-1), generateNowYear(), generateRandomName(), generateRandomCVC());
     }
 
     public static CardInfo nameRus() {
-        return new CardInfo("1111 2222 3333 4444", generateRandomMonth(), generateRandomYear(), "Иван Иванов", generateRandomCVC());
+        return new CardInfo("1111 2222 3333 4444", generateMonth(1), generateRandomYear(), "Иван Иванов", generateRandomCVC());
     }
 
     public static CardInfo nameNumb() {
-        return new CardInfo("1111 2222 3333 4444", generateRandomMonth(), generateRandomYear(), "123456", generateRandomCVC());
+        return new CardInfo("1111 2222 3333 4444", generateMonth(1), generateRandomYear(), "123456", generateRandomCVC());
     }
 
     public static CardInfo nameSymb() {
-        return new CardInfo("1111 2222 3333 4444", generateRandomMonth(), generateRandomYear(), "!\"№;%%:", generateRandomCVC());
+        return new CardInfo("1111 2222 3333 4444", generateMonth(1), generateRandomYear(), "!\"№;%%:", generateRandomCVC());
     }
 
     public static CardInfo nameSpace() {
-        return new CardInfo("1111 2222 3333 4444", generateRandomMonth(), generateRandomYear(), "      ", generateRandomCVC());
+        return new CardInfo("1111 2222 3333 4444", generateMonth(1), generateRandomYear(), "      ", generateRandomCVC());
     }
 
     public static CardInfo spaceField() {

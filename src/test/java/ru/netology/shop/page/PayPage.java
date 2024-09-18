@@ -45,7 +45,7 @@ public class PayPage {
     }
 
     public void errorNotification(String expectedText) {
-        errorNotification.shouldHave(text(expectedText)).shouldBe(visible, Duration.ofSeconds(15));
+        errorNotification.shouldHave(text(expectedText)).shouldBe(visible);
     }
 
     public void errorAllNotification() {

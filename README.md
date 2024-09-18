@@ -1,7 +1,7 @@
 # Процедура запуска автотестов
 
 1. Установить IntelliJ IDEA 2024.1 (Community Edition)
-2. Установить Docker Desktop
+2. Установить  и открыть Docker Desktop
 3. Открыть проект в IntelliJ IDEA
 4. Открыть файл build.gradle и обновить сборку
 5. В окне терминала запустить команду docker compose up

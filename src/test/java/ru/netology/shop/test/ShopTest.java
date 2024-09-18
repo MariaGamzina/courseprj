@@ -55,7 +55,7 @@ public class ShopTest {
         var cardInfo = DataHelper.getSecondCardInfo();
         payPage.makeValidCard(cardInfo);
         payPage.successNotification();
-        Assertions.assertEquals("APPROVED", SqlHelper.getStatus());
+        Assertions.assertEquals("DECLINED", SqlHelper.getStatus());
 
     }
 
